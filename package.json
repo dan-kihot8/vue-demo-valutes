@@ -4,7 +4,13 @@
 	"dependencies": {
 		"axios": "^0.18.0",
 		"nuxt": "^2.3.4",
-		"vuejs-datepicker": "^1.5.4"
+		"vuejs-datepicker": "^1.5.4",
+		"vuetify-loader": "latest",
+		"vuetify": "latest"
+	},
+	"devDependencies": {
+		"stylus": "latest",
+		"stylus-loader": "latest"
 	},
 	"scripts": {
 		"dev": "nuxt",

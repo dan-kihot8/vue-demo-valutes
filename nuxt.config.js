@@ -1,4 +1,5 @@
 const pkg = require('./package')
+import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 
 module.exports = {
   mode: 'universal',
@@ -28,16 +29,16 @@ module.exports = {
   /*
   ** Global CSS
   */
-  // css: [
-  //   '~/assets/style/app.styl'
-  // ],
+  css: [
+    '~/assets/style/app.styl'
+  ],
 
   /*
   ** Plugins to load before mounting the App
   */
-  // plugins: [
-  //   '@/plugins/vuetify'
-  // ],
+  plugins: [
+    '@/plugins/vuetify'
+  ],
 
   /*
   ** Nuxt.js modules
@@ -61,6 +62,10 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    transpile: [/^vuetify/],
+    plugins: [
+      new VuetifyLoaderPlugin()
+    ],
     extend(config, ctx) {
       
     }

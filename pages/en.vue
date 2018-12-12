@@ -1,26 +1,56 @@
 
 <template>
 	<div>
-		<router-link to="/ru">Ru</router-link><br>
-        <span>Choose the base rate: </span>
-        <select v-model="baseRate">
-            <option v-for="rate in $store.state.rates" v-bind:value="rate">
-            {{ rate }}
-          </option>
-        </select>
-        <div>Choose the rates to compare: </div>
-        <input type="checkbox" @click="selectAll($store.state.rates)" v-model="allSelected">
-        <label>Select all</label><br>
+		<router-link to="/ru">Ru</router-link>
+      <br><br>
+      <v-app>
+      <v-container fluid grid-list-xl>
+        <v-layout wrap align-center> 
+          <v-flex xs12 sm6 d-flex>
+            <v-select 
+                v-model="baseRate"
+                :items="$store.state.rates"
+                label="The base rate ">
+            </v-select>
+          </v-flex>
+        </v-layout>
+
+        <span>Choose the rates to compare: </span>
+        <input type="checkbox" 
+          class="v-input--selection-controls__input"
+          @click="selectAll($store.state.rates)" 
+          v-model="allSelected"
+        >
+        <v-label class="v-label theme--light">Select all</v-label><br>
+        <v-layout row wrap>
         <span v-for="rate in $store.state.rates" >
-            <input type="checkbox" :value="rate" v-model="checkedScopes">
-            <label>{{rate}}</label>
+          <v-flex xs12 sm4 md4>
+          <v-checkbox 
+            v-model="checkedScopes" 
+            :label="rate" 
+            :value="rate"
+            color="indigo"
+            hide-details
+          ></v-checkbox>
+          </v-flex>
+          
         </span>
+        </v-layout>
         <div>Choose date from: </div>
         <datepicker :disabledDates="disabledDates" v-model="date_from"></datepicker>
         
         <div>Choose date to: </div>
         <datepicker :disabledDates="disabledDates" v-model="date_to"></datepicker>
-        <button @click="getHistory">Get history</button>
+        <v-btn color="green" @click="getHistory">Get history</v-btn>
+        <v-alert
+          v-model="alert.display"
+          dismissible
+          :type="alert.atype"
+        >
+        {{alert.value}}
+      </v-alert>
+      </v-container>
+      </v-app>
 	</div>
 </template>
 

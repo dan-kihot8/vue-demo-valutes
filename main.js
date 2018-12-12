@@ -2,6 +2,10 @@ import axios from 'axios'
 import store from './store'
 import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker';
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css' 
+ 
+Vue.use(Vuetify)
 
 // var all_rates;
 // store().dispatch("loadRates").then((res) => {
@@ -25,7 +29,11 @@ export default {
           disabledDates: {
               to: new Date(1999, 0, 1),
               from: new Date()
-          }
+          },
+          alert: {display: false,
+          		  value: "success!",
+          		  atype: "success"
+          		}
         }
     },
     components: {
@@ -33,13 +41,15 @@ export default {
     },
     methods: {
         selectAll: function(rates) {
-            // console.log(e);
+            console.log("selectAll");
+            console.log(this.allSelected);
             if (!this.allSelected) {
-                this.checkedScopes=rates
+                this.checkedScopes=rates;
             }
             else {
                 this.checkedScopes=[]
             }
+            
         },
         
         getHistory: function () {
@@ -57,11 +67,17 @@ export default {
         	let base_url=store().state.base_url;
         	axios.get(base_url, { params })
 	        	.then((res) => {
-	        			alert("Success!")
+	        			this.alert={display: true,
+		          		  value: "success!",
+		          		  atype: "success"
+		          		}
 	        			console.log("DATA",res.data);	
 	        	})
 	        	.catch((e) => {
-			      alert(e.toString() )
+			      		this.alert={display: true,
+		          		  value: e.toString(),
+		          		  atype: "error"
+		          		}
 			    })
         }
     },
