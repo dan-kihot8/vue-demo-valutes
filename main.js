@@ -3,9 +3,9 @@ import store from './store'
 import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker';
 
-var all_rates;
+// var all_rates;
 // store().dispatch("loadRates").then((res) => {
-//   all_rates = res;
+  // all_rates = res;
 // });
 
 export default {
@@ -32,14 +32,37 @@ export default {
         Datepicker
     },
     methods: {
-        selectAll: function() {
-            console.log(this);
+        selectAll: function(rates) {
+            // console.log(e);
             if (!this.allSelected) {
-                this.checkedScopes=all_rates
+                this.checkedScopes=rates
             }
             else {
                 this.checkedScopes=[]
             }
+        },
+        
+        getHistory: function () {
+        	let params = {};
+        	params["base"]=this.baseRate;
+        	params["start_at"]=formatDate(this.date_from);
+        	params["end_at"]=formatDate(this.date_to);
+        	let checkedScopes=this.checkedScopes;
+        	let indexBase = checkedScopes.indexOf(this.baseRate);
+        	if (indexBase > -1) {
+        		checkedScopes.splice( indexBase, 1 );
+        	}
+        	params["symbols"]=checkedScopes.toString();
+        	// console.log(params);
+        	let base_url=store().state.base_url;
+        	axios.get(base_url, { params })
+	        	.then((res) => {
+	        			alert("Success!")
+	        			console.log("DATA",res.data);	
+	        	})
+	        	.catch((e) => {
+			      alert(e.toString() )
+			    })
         }
     },
     fetch ({ store, params }) {
@@ -56,10 +79,18 @@ export default {
             let keys = Object.keys(rates);
             keys.push('EUR');
             keys.sort();
-            all_rates=keys
-            console.log(keys);
+            // all_rates=keys
+            console.log("fetch",keys);
             store.commit('SET', keys)
         })
     },
     
 }
+
+
+function formatDate(date) {
+	let y=date.getFullYear().toString()
+	let m=(date.getMonth()+1).toString()
+	let d=date.getDate().toString()
+	return [y,m,d].join('-')
+};

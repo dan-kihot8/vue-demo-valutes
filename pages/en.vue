@@ -9,7 +9,7 @@
           </option>
         </select>
         <div>Choose the rates to compare: </div>
-        <input type="checkbox" @click="selectAll" v-model="allSelected">
+        <input type="checkbox" @click="selectAll($store.state.rates)" v-model="allSelected">
         <label>Select all</label><br>
         <span v-for="rate in $store.state.rates" >
             <input type="checkbox" :value="rate" v-model="checkedScopes">
@@ -20,6 +20,7 @@
         
         <div>Choose date to: </div>
         <datepicker :disabledDates="disabledDates" v-model="date_to"></datepicker>
+        <button @click="getHistory">Get history</button>
 	</div>
 </template>
 

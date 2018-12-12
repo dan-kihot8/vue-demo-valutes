@@ -7,6 +7,7 @@ Vue.use(Vuex)
 const store = () => new Vuex.Store({
 
   state: {
+    base_url: "https://api.exchangeratesapi.io/history?",
     rates: [],
     choosen_rates: []
   },
@@ -32,7 +33,7 @@ const store = () => new Vuex.Store({
   		 let keys = Object.keys(rates);
             keys.push('EUR');
             keys.sort();
-            console.log("loadRates(store)",keys);
+            console.log("loadRates(store)",keys); 
   		commit('SET', keys);
   		return response.data.rates
   	},
