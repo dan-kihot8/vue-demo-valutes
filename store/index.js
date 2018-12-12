@@ -9,7 +9,7 @@ const store = () => new Vuex.Store({
   state: {
     base_url: "https://api.exchangeratesapi.io/history?",
     rates: [],
-    choosen_rates: []
+    history: {}
   },
   getters: {
   	getRates (state) {
@@ -22,7 +22,10 @@ const store = () => new Vuex.Store({
   	},
   	SET(state, new_list) {
   		state.rates = new_list
-  	}
+  	},
+    SAVE_RESULT(state, res) {
+      state.history = res
+    }
   }
   ,
   actions: {

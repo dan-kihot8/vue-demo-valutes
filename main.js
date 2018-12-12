@@ -52,7 +52,8 @@ export default {
             
         },
         
-        getHistory: function () {
+        getHistory: function (store) {
+        	console.log(store);
         	let params = {};
         	params["base"]=this.baseRate;
         	params["start_at"]=formatDate(this.date_from);
@@ -64,14 +65,16 @@ export default {
         	}
         	params["symbols"]=checkedScopes.toString();
         	// console.log(params);
-        	let base_url=store().state.base_url;
+        	let base_url=store.state.base_url;
         	axios.get(base_url, { params })
 	        	.then((res) => {
 	        			this.alert={display: true,
 		          		  value: "success!",
 		          		  atype: "success"
-		          		}
-	        			console.log("DATA",res.data);	
+		          		};
+	        			console.log("DATA",res.data);
+	        			store.commit("SAVE_RESULT", res.data)
+	        			// console.log(store);
 	        	})
 	        	.catch((e) => {
 			      		this.alert={display: true,
@@ -79,6 +82,10 @@ export default {
 		          		  atype: "error"
 		          		}
 			    })
+        },
+        showResult: function(history) {
+        	console.log(history);
+        	console.log(history.rates);
         }
     },
     fetch ({ store, params }) {

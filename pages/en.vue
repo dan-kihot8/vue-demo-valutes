@@ -41,14 +41,16 @@
         
         <div>Choose date to: </div>
         <datepicker :disabledDates="disabledDates" v-model="date_to"></datepicker>
-        <v-btn color="green" @click="getHistory">Get history</v-btn>
+        <v-btn color="green" @click="getHistory($store)">Get history</v-btn>
         <v-alert
           v-model="alert.display"
           dismissible
           :type="alert.atype"
         >
         {{alert.value}}
+
       </v-alert>
+      <v-btn color="yellow" @click="showResult($store.state.history)">Show history</v-btn>
       </v-container>
       </v-app>
 	</div>
