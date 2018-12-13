@@ -48,9 +48,14 @@
           :type="alert.atype"
         >
         {{alert.value}}
-
-      </v-alert>
-      <v-btn color="yellow" @click="showResult($store.state.history)">Show history</v-btn>
+        </v-alert>
+        <v-btn 
+          v-if="$store.state.history.rates!=undefined"
+          color="yellow" 
+          @click="showResult($store.state.history)"
+        >
+          Show history
+        </v-btn>
       </v-container>
       </v-app>
 	</div>

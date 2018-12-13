@@ -41,30 +41,32 @@ export default {
     },
     methods: {
         selectAll: function(rates) {
-            console.log("selectAll");
-            console.log(this.allSelected);
             if (!this.allSelected) {
                 this.checkedScopes=rates;
             }
             else {
                 this.checkedScopes=[]
             }
-            
         },
         
         getHistory: function (store) {
-        	console.log(store);
         	let params = {};
         	params["base"]=this.baseRate;
         	params["start_at"]=formatDate(this.date_from);
         	params["end_at"]=formatDate(this.date_to);
-        	let checkedScopes=this.checkedScopes;
+        	let checkedScopes=clone(this.checkedScopes);
+        	if ( checkedScopes.length == 0 ) {
+        		this.alert={display: true,
+		          		  value: "Please, select the rates!",
+		          		  atype: "warning"
+		          		};
+		        return false
+        	}
         	let indexBase = checkedScopes.indexOf(this.baseRate);
         	if (indexBase > -1) {
         		checkedScopes.splice( indexBase, 1 );
         	}
         	params["symbols"]=checkedScopes.toString();
-        	// console.log(params);
         	let base_url=store.state.base_url;
         	axios.get(base_url, { params })
 	        	.then((res) => {
@@ -74,7 +76,29 @@ export default {
 		          		};
 	        			console.log("DATA",res.data);
 	        			store.commit("SAVE_RESULT", res.data)
-	        			// console.log(store);
+	        			let table_headers = (checkedScopes).map(function(item) {
+			              return {
+			              	text: item,
+			              	value: item,
+			              	align: 'left'
+			              }
+			            });
+			            table_headers.splice(0, 0, {text:"Date",
+			            							value: 'name',
+			            							align: 'left'
+			            							}
+			            );
+			            let rates = res.data.rates;
+			            let dates_array=Object.keys(rates);
+			            let table_items = []
+			            for (let key in rates) {
+			            	let item=rates[key]
+			            	item['name']=key
+			            	table_items.push(item)
+			            }
+
+	        			store.commit("SET_HEADERS", table_headers);
+	        			store.commit("SET_ITEMS", table_items);
 	        	})
 	        	.catch((e) => {
 			      		this.alert={display: true,
@@ -85,25 +109,16 @@ export default {
         },
         showResult: function(history) {
         	console.log(history);
-        	console.log(history.rates);
+        	this.$router.push("/result");
         }
     },
     fetch ({ store, params }) {
         return axios.get('https://api.exchangeratesapi.io/latest')
         .then((res) => {
             let rates = res.data.rates;
-            // store.commit('SET', new_array)
-            // var new_array = Object.keys(rates).map(function(item) {
-            //     console.log(item);
-            //   return item;
-            // });
-            // rates['EUR']=1;
-            
             let keys = Object.keys(rates);
             keys.push('EUR');
             keys.sort();
-            // all_rates=keys
-            console.log("fetch",keys);
             store.commit('SET', keys)
         })
     },
@@ -117,3 +132,12 @@ function formatDate(date) {
 	let d=date.getDate().toString()
 	return [y,m,d].join('-')
 };
+
+function clone(obj) {
+    if (null == obj || "object" != typeof obj) return obj;
+    var copy = obj.constructor();
+    for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+    }
+    return copy;
+}
