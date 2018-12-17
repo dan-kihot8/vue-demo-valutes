@@ -4,11 +4,17 @@
 	"dependencies": {
 		"axios": "^0.18.0",
 		"nuxt": "^2.3.4",
+		"nuxt-i18n": "^5.4.4",
+		"vue-i18n": "^8.4.0",
 		"vuejs-datepicker": "^1.5.4",
-		"vuetify-loader": "latest",
-		"vuetify": "latest"
+		"vuetify": "latest",
+		"vuetify-loader": "latest"
 	},
 	"devDependencies": {
+		"babel-eslint": "^10.0.1",
+		"eslint": "^5.10.0",
+		"eslint-loader": "^2.1.1",
+		"eslint-plugin-vue": "^5.0.0",
 		"stylus": "latest",
 		"stylus-loader": "latest"
 	},

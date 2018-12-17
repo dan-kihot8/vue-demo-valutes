@@ -20,7 +20,9 @@ module.exports = {
     ]
   },
   store: true,
-
+  router: {              // customize nuxt.js router (vue-router).
+    // middleware: 'i18n'   // middleware all pages of the application
+  },
   /*
   ** Customize the progress-bar color
   */
@@ -37,16 +39,51 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify'
+    '@/plugins/vuetify'  
   ],
 
   /*
   ** Nuxt.js modules
   */
-  // modules: [
+  modules: [
   //   // Doc: https://github.com/nuxt-community/axios-module#usage
     // '@nuxtjs/axios'
-  // ],
+    ['nuxt-i18n', {
+      locales: [
+        {
+          code: 'en',
+          iso: 'en-US',
+          name: 'English',
+          file: 'en.js'
+        },
+        {
+          code: 'ru',
+          iso: 'ru-RU',
+          name: 'Russian',
+          file: 'ru.js'
+        },
+        {
+          code: 'fr',
+          iso: 'fr-FR',
+          name: 'French',
+          file: 'fr.js'
+        }
+      ],
+      vueI18n: {
+        fallbackLocale: 'en'
+      },
+      // loadLanguagesAsync: true,
+      langDir: 'locales/',
+      defaultLocale: 'en',
+      lazy: true
+      // strategy: 'prefix_and_default',
+      // detectBrowserLanguage: {
+      //   useCookie: true,
+      //   cookieKey: 'i18n_redirected',
+      //   alwaysRedirect: false      
+      // },
+    }]
+  ],
   /*
   ** Axios module configuration
   */
@@ -67,7 +104,15 @@ module.exports = {
       new VuetifyLoaderPlugin()
     ],
     extend(config, ctx) {
-      
+      // Run ESLint on save
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
     }
   }
 }

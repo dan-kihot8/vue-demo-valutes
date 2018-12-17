@@ -3,9 +3,11 @@ import store from './store'
 import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker';
 import Vuetify from 'vuetify'
+import VueI18n from 'vue-i18n'
 import 'vuetify/dist/vuetify.min.css' 
  
 Vue.use(Vuetify)
+Vue.use(VueI18n)
 
 // var all_rates;
 // store().dispatch("loadRates").then((res) => {
@@ -47,8 +49,7 @@ export default {
             else {
                 this.checkedScopes=[]
             }
-        },
-        
+        },      
         getHistory: function (store) {
         	let params = {};
         	params["base"]=this.baseRate;
@@ -75,7 +76,7 @@ export default {
 		          		  atype: "success"
 		          		};
 	        			console.log("DATA",res.data);
-	        			store.commit("SAVE_RESULT", res.data)
+	        			store.commit("SET_HISTORY", res.data)
 	        			let table_headers = (checkedScopes).map(function(item) {
 			              return {
 			              	text: item,
@@ -120,6 +121,7 @@ export default {
             keys.push('EUR');
             keys.sort();
             store.commit('SET', keys)
+            console.log('store', store);
         })
     },
     
