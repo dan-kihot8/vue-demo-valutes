@@ -9,7 +9,7 @@
 	  	>
 		  	<template slot="items" slot-scope="props" >
 	      	<!-- <td class="text-xs-left" >{{ props.item.name }}</td> -->
-	      	<td class="text-xs-left" v-for="rate of $store.state.choosen_rates" :key="rate">
+	      	<td class="text-xs-left" v-for="rate of $store.state.choosen_rates" :key="rate.value">
 	      		{{ props.item[rate.value] }}
 	      	</td>
 	    	</template>
@@ -18,11 +18,9 @@
 	</div>
 </template>
 
-<script>
-// import store from '../store'
+<script >
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css' 
  
 Vue.use(Vuetify)
 
