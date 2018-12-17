@@ -1,0 +1,13 @@
+{
+  "links": {
+    "home": "Домой"
+  },
+  "home": {
+    "title": "Привет",
+    "introduction": "This is an introduction in Русском."
+  },
+  "about": {
+    "title": "Об этом",
+    "introduction": "..."
+  }
+}
