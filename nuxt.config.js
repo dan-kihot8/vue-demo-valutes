@@ -51,6 +51,7 @@ module.exports = {
   //   // Doc: https://github.com/nuxt-community/axios-module#usage
     // '@nuxtjs/axios'
     ['nuxt-i18n', {
+
       locales: [
         {
           code: 'en',
@@ -85,6 +86,7 @@ module.exports = {
       //   alwaysRedirect: false      
       // },
     }]
+
   ],
   /*
   ** Axios module configuration

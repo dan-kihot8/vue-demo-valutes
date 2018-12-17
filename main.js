@@ -1,92 +1,14 @@
-<template>
-  <section class="container">
-	<div>
-		<router-link to="/ru">Ru</router-link>
-    <div class="links">
-        <nuxt-link
-          v-for="locale in $i18n.locales"
-          :key="locale.code"
-          :to="switchLocalePath(locale.code)"
-          style="padding: 0.5em"
-          >
-          <template v-if="locale.code !== $i18n.locale" >
-          	{{ locale.name }}
-          </template>
-      	</nuxt-link>
-    </div>
-      <div>From Tranlation -  <b>{{ $t('common.test') }} </b></div>
-      <v-app>
-      <v-container fluid grid-list-xl>
-        <v-layout wrap align-center> 
-          <v-flex xs12 sm6 d-flex>
-            <v-select 
-                v-model="baseRate"
-                :items="$store.state.rates"
-                label="The base rate ">
-            </v-select>
-          </v-flex>
-        </v-layout>
-
-        <span>Choose the rates to compare: </span>
-        <input type="checkbox" 
-          class="v-input--selection-controls__input"
-          @click="selectAll($store.state.rates)" 
-          v-model="allSelected"
-        >
-        <v-label class="v-label theme--light">Select all</v-label><br>
-        <v-layout row wrap>
-        <span v-for="rate in $store.state.rates" :key="rate">
-          <v-flex xs12 sm4 md4>
-          <v-checkbox 
-            v-model="checkedScopes" 
-            :label="rate" 
-            :value="rate"
-            color="indigo"
-            hide-details
-          ></v-checkbox>
-          </v-flex>
-        </span>
-        </v-layout>
-        <div>Choose date from: </div>
-        <datepicker :disabledDates="disabledDates" v-model="date_from"></datepicker>
-        <div>Choose date to: </div>
-        <datepicker :disabledDates="disabledDates" v-model="date_to"></datepicker>
-        <v-btn color="green" @click="getHistory($store)">Get history</v-btn>
-        <v-alert
-          v-model="alert.display"
-          dismissible
-          :type="alert.atype"
-        >
-        {{alert.value}}
-        </v-alert>
-        <v-btn 
-          v-if="$store.state.history.rates!=undefined"
-          color="yellow" 
-          @click="showResult($store.state.history)"
-        >
-          Show history
-        </v-btn>
-      </v-container>
-      </v-app>
-	</div>
-  </section>
-</template>
-
-
-
-<script>
 import axios from 'axios'
-import store from '~/store'
+import store from './store'
 import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker';
 import Vuetify from 'vuetify'
-import VueI18n from 'vue-i18n'
+// import VueI18n from 'vue-i18n'
 import 'vuetify/dist/vuetify.min.css' 
  
 Vue.use(Vuetify)
-Vue.use(VueI18n)
+// Vue.use(VueI18n)
 
-console.log("MAINJS");
 // var all_rates;
 // store().dispatch("loadRates").then((res) => {
   // all_rates = res;
@@ -194,7 +116,6 @@ export default {
     fetch ({ store, params }) {
         return axios.get('https://api.exchangeratesapi.io/latest')
         .then((res) => {
-        	console.log("runnin fetch in main.js");
             let rates = res.data.rates;
             let keys = Object.keys(rates);
             keys.push('EUR');
@@ -222,5 +143,3 @@ function clone(obj) {
     }
     return copy;
 }
-
-</script> 
