@@ -3,7 +3,7 @@ import VuetifyLoaderPlugin from 'vuetify-loader/lib/plugin'
 
 module.exports = {
   mode: 'universal',
-
+  
   /*
   ** Headers of the page
   */
@@ -15,7 +15,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: pkg.description }
     ],
     link: [
-      // { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
     ]
   },
@@ -40,8 +40,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify'
-    // '@/plugins/main',
+    { ssr: false, src: '~plugins/vuetify'}
+    // { ssr: false, src: '~plugins/main' }
   ],
 
   /*
@@ -49,7 +49,7 @@ module.exports = {
   */
   modules: [
   //   // Doc: https://github.com/nuxt-community/axios-module#usage
-    // '@nuxtjs/axios'
+    '@nuxtjs/axios',
     ['nuxt-i18n', {
 
       locales: [
@@ -75,16 +75,18 @@ module.exports = {
       vueI18n: {
         fallbackLocale: 'en'
       },
-      // loadLanguagesAsync: true,
+      loadLanguagesAsync: true,
       langDir: 'locales/',
       defaultLocale: 'en',
-      lazy: true
-      // strategy: 'prefix_and_default',
-      // detectBrowserLanguage: {
-      //   useCookie: true,
-      //   cookieKey: 'i18n_redirected',
-      //   alwaysRedirect: false      
-      // },
+      rootRedirect: 'en',
+      // baseUrl: 'en'
+      lazy: true,
+      noPrefixDefaultLocale: false,
+      strategy: 'prefix',
+      detectBrowserLanguage: true,
+      redirectCookieKey: 'redirected',
+      useRedirectCookie: true,
+      redirectRootToLocale: 'en'
     }]
 
   ],
@@ -108,6 +110,7 @@ module.exports = {
       new VuetifyLoaderPlugin()
     ],
     extend(config, ctx) {
+      'axios';
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({

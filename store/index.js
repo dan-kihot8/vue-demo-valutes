@@ -10,7 +10,10 @@ const store = () => new Vuex.Store({
     // locale: 'en',
     // locales: ['en', 'ru', 'fr'],
     base_url: "https://api.exchangeratesapi.io/history",
-    rates: [],
+    rates: ["AUD", "BGN", "BRL", "CAD", "CHF", "CNY", "CZK", "DKK", "EUR", 
+      "GBP", "HKD", "HRK", "HUF", "IDR", "ILS", "INR", "ISK", "JPY", "KRW", 
+      "MXN", "MYR", "NOK", "NZD", "PHP", "PLN", "RON", "RUB", "SEK", "SGD", 
+      "THB", "TRY", "USD", "ZAR"],
     history: {
       base: null,
       end_at: null,
@@ -54,10 +57,12 @@ const store = () => new Vuex.Store({
             keys.sort();
             console.log("loadRates(store)",keys); 
   		commit('SET', keys);
-  		return response.data.rates
-  	}
+  		// return response.data.rates
+  	},
   }
 
 })
 
+// store.dispatch('loadRates');
 export default store
+

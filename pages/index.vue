@@ -1,39 +1,29 @@
 <template>
   <section class="container">
+  	<v-app light>
 	<div>
-		<router-link to="/ru">Ru</router-link>
-    <div class="links">
-        <nuxt-link
-          v-for="locale in $i18n.locales"
-          :key="locale.code"
-          :to="switchLocalePath(locale.code)"
-          style="padding: 0.5em"
-          >
-          <template v-if="locale.code !== $i18n.locale" >
-          	{{ locale.name }}
-          </template>
-      	</nuxt-link>
-    </div>
-      <div>From Tranlation -  <b>{{ $t('common.test') }} </b></div>
-      <v-app>
+    
+      <div>{{ $t('index.header') }}</div>
+      
       <v-container fluid grid-list-xl>
         <v-layout wrap align-center> 
           <v-flex xs12 sm6 d-flex>
             <v-select 
                 v-model="baseRate"
                 :items="$store.state.rates"
-                label="The base rate ">
+                :label="$t('common.base_rate')"
+            >
             </v-select>
           </v-flex>
         </v-layout>
 
-        <span>Choose the rates to compare: </span>
+        <div class="pb-2">{{ $t('index.compare') }}:</div>
         <input type="checkbox" 
-          class="v-input--selection-controls__input"
+          class="v-input--selection-controls__input v-icon"
           @click="selectAll($store.state.rates)" 
           v-model="allSelected"
         >
-        <v-label class="v-label theme--light">Select all</v-label><br>
+        <v-label class="v-label theme--light">{{ $t('index.select') }}</v-label><br>
         <v-layout row wrap>
         <span v-for="rate in $store.state.rates" :key="rate">
           <v-flex xs12 sm4 md4>
@@ -47,11 +37,11 @@
           </v-flex>
         </span>
         </v-layout>
-        <div>Choose date from: </div>
-        <datepicker :disabledDates="disabledDates" v-model="date_from"></datepicker>
-        <div>Choose date to: </div>
-        <datepicker :disabledDates="disabledDates" v-model="date_to"></datepicker>
-        <v-btn color="green" @click="getHistory($store)">Get history</v-btn>
+        <div >{{ $t('index.ch_date_from') }}:</div>
+        <datepicker class="pa-1 pl-3" :disabledDates="disabledDates" v-model="date_from"></datepicker>
+        <div>{{ $t('index.ch_date_to') }}:</div>
+        <datepicker class="pa-1 pl-3" :disabledDates="disabledDates" v-model="date_to"></datepicker>
+        <v-btn color="green" @click="getHistory($store)">{{ $t('index.get_history') }}</v-btn>
         <v-alert
           v-model="alert.display"
           dismissible
@@ -62,13 +52,14 @@
         <v-btn 
           v-if="$store.state.history.rates!=undefined"
           color="yellow" 
-          @click="showResult($store.state.history)"
+          @click="showResult($store.state.history, $i18n.locale)"
         >
-          Show history
+          {{ $t('index.show_history') }}
         </v-btn>
       </v-container>
-      </v-app>
+      
 	</div>
+	</v-app>
   </section>
 </template>
 
@@ -77,27 +68,29 @@
 <script>
 import axios from 'axios'
 import store from '~/store'
-import Vue from 'vue'
+// import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker';
-import Vuetify from 'vuetify'
-import VueI18n from 'vue-i18n'
-import 'vuetify/dist/vuetify.min.css' 
- 
-Vue.use(Vuetify)
-Vue.use(VueI18n)
-
-console.log("MAINJS");
-// var all_rates;
-// store().dispatch("loadRates").then((res) => {
-  // all_rates = res;
-// });
+// import Vuetify from 'vuetify'
+// import VueI18n from 'vue-i18n'
+// import 'vuetify/dist/vuetify.min.css' 
+// import colors from 'vuetify/es5/util/colors'
+// Vue.use(VueI18n)
 
 export default {
-	// async data () {
-	//     let res = await axios.get('https://api.exchangeratesapi.io/latest')
-	//     console.log("DATA",res);
-	//     return { all_rates: res.data.res }
-	//   },
+	// async fetch({store, params}) {
+ //    try {
+ //    	let response  = await axios.get('rates.json');
+	//     if (response.status === 200) {
+	//         let rates = response.data.rates;
+	//   		// let keys = Object.keys(rates);
+	//         rates.sort();
+	//         console.log("loadRates(json)",rates); 
+	//   		store.commit('SET', rates);
+	//     }
+ //    } catch (error) {
+ //      console.error("ERR!",error)
+ //    }
+ //  },
     data () {
         return {
           checkedScopes: [],
@@ -111,7 +104,7 @@ export default {
               from: new Date()
           },
           alert: {display: false,
-          		  value: "success!",
+          		  value: "$t('common.base_rate')",
           		  atype: "success"
           		}
         }
@@ -136,7 +129,7 @@ export default {
         	let checkedScopes=clone(this.checkedScopes);
         	if ( checkedScopes.length == 0 ) {
         		this.alert={display: true,
-		          		  value: "Please, select the rates!",
+		          		  value: "$t('common.error')",
 		          		  atype: "warning"
 		          		};
 		        return false
@@ -150,10 +143,10 @@ export default {
         	axios.get(base_url, { params })
 	        	.then((res) => {
 	        			this.alert={display: true,
-		          		  value: "success!",
+		          		  value: "$t('common.success')",
 		          		  atype: "success"
 		          		};
-	        			console.log("DATA",res.data);
+	        			// console.log("DATA",res.data);
 	        			store.commit("SET_HISTORY", res.data)
 	        			let table_headers = (checkedScopes).map(function(item) {
 			              return {
@@ -186,24 +179,11 @@ export default {
 		          		}
 			    })
         },
-        showResult: function(history) {
-        	console.log(history);
-        	this.$router.push("/result");
+        showResult: function(history, locale) {
+        	// console.log(history);
+        	this.$router.push(locale + "/result");
         }
-    },
-    fetch ({ store, params }) {
-        return axios.get('https://api.exchangeratesapi.io/latest')
-        .then((res) => {
-        	console.log("runnin fetch in main.js");
-            let rates = res.data.rates;
-            let keys = Object.keys(rates);
-            keys.push('EUR');
-            keys.sort();
-            store.commit('SET', keys)
-            console.log('store', store);
-        })
-    },
-    
+    }    
 }
 
 
