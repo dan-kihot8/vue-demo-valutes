@@ -56,6 +56,7 @@
           v-model="alert.display"
           dismissible
           :type="alert.atype"
+          class="black--text"
         >
         {{alert.value}}
         </v-alert>
