@@ -6,12 +6,13 @@ export default {
         ch_date_from: "Choose date from",
         ch_date_to: "Choose date to",
         get_history: "Get history",
-        show_history: "Show history"
+        show_history: "Show history",
+        success: "Success!",
+		warning: "Please, select the rates!"
 	},
 	common: {
 		base_rate: "The base rate",
 		period: "The period",
-		success: "Success!",
-		error: "Please, select the rates!"
+        divider: "to"
 	}
 }

@@ -41,14 +41,10 @@
         <datepicker class="pa-1 pl-3" :disabledDates="disabledDates" v-model="date_from"></datepicker>
         <div>{{ $t('index.ch_date_to') }}:</div>
         <datepicker class="pa-1 pl-3" :disabledDates="disabledDates" v-model="date_to"></datepicker>
-        <v-btn color="green" @click="getHistory($store)">{{ $t('index.get_history') }}</v-btn>
-        <v-alert
-          v-model="alert.display"
-          dismissible
-          :type="alert.atype"
-        >
-        {{alert.value}}
-        </v-alert>
+        <v-btn color="green" 
+        	@click="getHistory($store, $t('index.warning'), $t('index.success'))">
+        	{{ $t('index.get_history') }}
+        </v-btn>
         <v-btn 
           v-if="$store.state.history.rates!=undefined"
           color="yellow" 
@@ -56,6 +52,14 @@
         >
           {{ $t('index.show_history') }}
         </v-btn>
+        <v-alert
+          v-model="alert.display"
+          dismissible
+          :type="alert.atype"
+        >
+        {{alert.value}}
+        </v-alert>
+        
       </v-container>
       
 	</div>
@@ -68,13 +72,7 @@
 <script>
 import axios from 'axios'
 import store from '~/store'
-// import Vue from 'vue'
 import Datepicker from 'vuejs-datepicker';
-// import Vuetify from 'vuetify'
-// import VueI18n from 'vue-i18n'
-// import 'vuetify/dist/vuetify.min.css' 
-// import colors from 'vuetify/es5/util/colors'
-// Vue.use(VueI18n)
 
 export default {
 	// async fetch({store, params}) {
@@ -95,7 +93,6 @@ export default {
         return {
           checkedScopes: [],
           allSelected: false,
-          // all_rates: all_rates,
           baseRate: 'EUR',
           date_from: new Date(2018, 9, 1),
           date_to: new Date(),
@@ -104,7 +101,7 @@ export default {
               from: new Date()
           },
           alert: {display: false,
-          		  value: "$t('common.base_rate')",
+          		  value: "",
           		  atype: "success"
           		}
         }
@@ -121,7 +118,7 @@ export default {
                 this.checkedScopes=[]
             }
         },      
-        getHistory: function (store) {
+        getHistory: function (store, warning_text, success_text) {
         	let params = {};
         	params["base"]=this.baseRate;
         	params["start_at"]=formatDate(this.date_from);
@@ -129,7 +126,7 @@ export default {
         	let checkedScopes=clone(this.checkedScopes);
         	if ( checkedScopes.length == 0 ) {
         		this.alert={display: true,
-		          		  value: "$t('common.error')",
+		          		  value: warning_text,
 		          		  atype: "warning"
 		          		};
 		        return false
@@ -143,7 +140,7 @@ export default {
         	axios.get(base_url, { params })
 	        	.then((res) => {
 	        			this.alert={display: true,
-		          		  value: "$t('common.success')",
+		          		  value: success_text,
 		          		  atype: "success"
 		          		};
 	        			// console.log("DATA",res.data);
@@ -152,7 +149,8 @@ export default {
 			              return {
 			              	text: item,
 			              	value: item,
-			              	align: 'left'
+			              	align: 'left',
+			              	sortable: false
 			              }
 			            });
 			            table_headers.splice(0, 0, {text:"Date",

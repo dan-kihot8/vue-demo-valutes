@@ -1,9 +1,10 @@
 <template>
-  <div class="app">
-    <div class="main">
-      <navbar/>
+  <div >
+  	<navbar/>
+    <main id="main" role="main">
+      
       <nuxt/>
-    </div>
+    </main>
   </div>
 </template>
 

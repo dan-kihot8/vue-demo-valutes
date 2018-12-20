@@ -15,4 +15,4 @@ Vue.use(Vuetify, {
     success: colors.green.accent3
   }
 })
-console.log(Vue.theme);
+console.log(colors.deepOrange.accent4);

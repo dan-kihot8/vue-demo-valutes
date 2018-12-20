@@ -32,15 +32,15 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '~/assets/style/app.styl',
-    'vuetify/dist/vuetify.min.css'
+    '~/assets/style/app.styl'
+    // 'vuetify/dist/vuetify.min.css'
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { ssr: false, src: '~plugins/vuetify'}
+    '~plugins/vuetify'
     // { ssr: false, src: '~plugins/main' }
   ],
 
@@ -64,12 +64,6 @@ module.exports = {
           iso: 'ru-RU',
           name: 'Russian',
           file: 'ru.js'
-        },
-        {
-          code: 'fr',
-          iso: 'fr-FR',
-          name: 'French',
-          file: 'fr.js'
         }
       ],
       vueI18n: {

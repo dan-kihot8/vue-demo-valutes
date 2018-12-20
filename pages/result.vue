@@ -2,19 +2,20 @@
 	<div >
 		<div v-if="$store.state.history.base">
 			<div class="body-1 v-text-field pl-4 pb-2">
-				<span class="font-weight-bold">{{ $t('common.base_rate') }}</span>
+				<span class="font-weight-bold">{{ $t('common.base_rate') }}:</span>
 				{{$store.state.history.base}}
 			</div>
 			<div class="body-1 v-text-field pl-4 pb-2">
-				<span class="font-weight-bold">{{ $t('common.period') }}</span>
-				{{$store.state.history.start_at}}  to  {{$store.state.history.end_at}}
+				<span class="font-weight-bold">{{ $t('common.period') }}:</span>
+				{{$store.state.history.start_at}}  {{ $t('common.divider') }}  {{$store.state.history.end_at}}
 			</div>
 		</div>
 		<v-app>
-			<v-data-table
+		<v-data-table
 	    :headers="$store.state.choosen_rates"
 	    :items="$store.state.items"
 	    class="elevation-1"
+	    :pagination.sync="pagination"
 	  	>
 		  	<template slot="items" slot-scope="props" >
 	      	<td class="text-xs-left" v-for="rate of $store.state.choosen_rates" :key="rate.value">
@@ -34,7 +35,11 @@
 
 export default {
 	data() {
-		return {}
+		return {
+			pagination: {
+			    rowsPerPage: 10
+			},
+		}
 	}
 }
 

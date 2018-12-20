@@ -1,6 +1,6 @@
 <template>
   <div >
-    <nav class="pa-3 white  v-toolbar" elevation-2 light>
+    <nav class="pa-3 white navbar v-toolbar elevation-2 light" >
     	<div class="links">
     		<nuxt-link to="/">Home</nuxt-link>
     	</div>
