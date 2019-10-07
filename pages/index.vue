@@ -76,20 +76,7 @@ import store from '~/store'
 import Datepicker from 'vuejs-datepicker';
 
 export default {
-	// async fetch({store, params}) {
- //    try {
- //    	let response  = await axios.get('rates.json');
-	//     if (response.status === 200) {
-	//         let rates = response.data.rates;
-	//   		// let keys = Object.keys(rates);
-	//         rates.sort();
-	//         console.log("loadRates(json)",rates); 
-	//   		store.commit('SET', rates);
-	//     }
- //    } catch (error) {
- //      console.error("ERR!",error)
- //    }
- //  },
+
     data () {
         return {
           checkedScopes: [],
